@@ -26,7 +26,7 @@ public class UsuarioPersistencia extends Persistencia {
 	}
 
 	// Persiste um usuário no banco
-	public void salvarUsuario(Usuario user) {
+	public void salvarUsuario(Usuario user) throws PersistenceException{
 		manager = factory.createEntityManager();
 
 		try {
@@ -36,8 +36,6 @@ public class UsuarioPersistencia extends Persistencia {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
-		} catch (PersistenceException e) {
-			System.out.println("Usuário já cadastrado!");
 		} finally {
 			manager.close();
 		}
@@ -89,6 +87,8 @@ public class UsuarioPersistencia extends Persistencia {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
+		} catch (IndexOutOfBoundsException e) {
+			return null;
 		}
 
 		return user;

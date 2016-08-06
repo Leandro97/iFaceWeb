@@ -13,6 +13,7 @@
    <class>br.ufal.modelo.MensagemComunidade</class>
    <class>br.ufal.modelo.Comunidade</class>
    <class>br.ufal.modelo.Amizade</class>
+   <class>br.ufal.modelo.Atributo</class>
 	
    <properties>
   <!-- dados da conexao -->
