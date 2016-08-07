@@ -50,10 +50,8 @@ public class Fachada {
 	}
 
 	// Envia pedido de amizade para um usuário
-	public void enviarPedidoAmizade(Usuario user1, Usuario user2,
-			boolean confirmado) {
-		UsuarioPersistencia.getInstance().enviarPedidoAmizade(user1, user2,
-				confirmado);
+	public void enviarPedidoAmizade(Usuario user1, Usuario user2, boolean confirmado) {
+		UsuarioPersistencia.getInstance().enviarPedidoAmizade(user1, user2, confirmado);
 	}
 
 	// Retorna lista de pedidos que ainda não foram aceitos
@@ -84,6 +82,7 @@ public class Fachada {
 	// Fim do bloco de Usuário
 
 	// Bloco de Atributo
+
 	// Persiste um atributo no banco
 	public void salvarAtributo(Atributo atributo) {
 		AtributoPersistencia.getInstance().salvarAtributo(atributo);
@@ -92,6 +91,11 @@ public class Fachada {
 	// Atualiza um atributo
 	public void atualizarAtributo(Atributo atributo) {
 		AtributoPersistencia.getInstance().atualizarAtributo(atributo);
+	}
+
+	// Retorna um atributo ao receber seu id
+	public Atributo getAtributoById(int id) {
+		return AtributoPersistencia.getInstance().getAtributoById(id);
 	}
 
 	// Fim do bloco de Atributo
@@ -133,17 +137,13 @@ public class Fachada {
 	// Bloco de Mensagem
 
 	// Envia mensagens de usuário para usuário
-	public void mensagemParaComunidade(Usuario emissor, Comunidade receptor,
-			String conteudo) {
-		MensagemPersistencia.getInstance().mensagemParaComunidade(emissor,
-				receptor, conteudo);
+	public void mensagemParaComunidade(Usuario emissor, Comunidade receptor, String conteudo) {
+		MensagemPersistencia.getInstance().mensagemParaComunidade(emissor, receptor, conteudo);
 	}
 
 	// Envia mensagens de usuário para usuário
-	public void mensagemParaUsuario(Usuario emissor, Usuario receptor,
-			String conteudo) {
-		MensagemPersistencia.getInstance().mensagemParaUsuario(emissor,
-				receptor, conteudo);
+	public void mensagemParaUsuario(Usuario emissor, Usuario receptor, String conteudo) {
+		MensagemPersistencia.getInstance().mensagemParaUsuario(emissor, receptor, conteudo);
 	}
 	// Fim do bloco de Mensagem
 

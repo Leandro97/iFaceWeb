@@ -50,4 +50,20 @@ public class AtributoPersistencia extends Persistencia {
 			manager.close();
 		}
 	}
+	
+	// Retorna um atributo ao receber seu id 
+		public Atributo getAtributoById(int id) {
+			Atributo atributo = null;
+			manager = factory.createEntityManager();
+
+			try {
+				atributo = manager.find(Atributo.class, id);
+				manager.close();
+			} catch (HibernateException e) {
+				e.printStackTrace();
+				manager.getTransaction().rollback();
+			}
+
+			return atributo;
+		}
 }

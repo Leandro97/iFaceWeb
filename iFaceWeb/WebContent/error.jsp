@@ -9,4 +9,6 @@
 	<body>
 		${messageError}
 	</body>
+	<br>
+	<a href = home.jsp>Voltar à página inicial</a>
 </html>
