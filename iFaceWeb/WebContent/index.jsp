@@ -9,7 +9,7 @@
 <body>
 	<form action="logar.jsp" method="post">
 		<fieldset>
-			Username: <input type="text" name="username"><br>
+			Login: <input type="text" name="username"><br>
 			Senha: <input type="password" name="senha"><br>
 			<input type="submit" value="Logar"><br>
 		</fieldset>

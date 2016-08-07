@@ -50,8 +50,8 @@ public class Fachada {
 	}
 
 	// Envia pedido de amizade para um usuário
-	public void enviarPedidoAmizade(Usuario user1, Usuario user2, boolean confirmado) {
-		UsuarioPersistencia.getInstance().enviarPedidoAmizade(user1, user2, confirmado);
+	public boolean enviarPedidoAmizade(Usuario user1, Usuario user2, boolean confirmado) {
+		return UsuarioPersistencia.getInstance().enviarPedidoAmizade(user1, user2, confirmado);
 	}
 
 	// Retorna lista de pedidos que ainda não foram aceitos

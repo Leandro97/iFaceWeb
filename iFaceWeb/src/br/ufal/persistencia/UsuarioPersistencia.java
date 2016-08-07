@@ -26,7 +26,7 @@ public class UsuarioPersistencia extends Persistencia {
 	}
 
 	// Persiste um usuário no banco
-	public void salvarUsuario(Usuario user) throws PersistenceException{
+	public void salvarUsuario(Usuario user) throws PersistenceException {
 		manager = factory.createEntityManager();
 
 		try {
@@ -79,10 +79,8 @@ public class UsuarioPersistencia extends Persistencia {
 		Usuario user = null;
 		try {
 			user = (Usuario) manager
-					.createQuery(
-							"SELECT u FROM Usuario u WHERE u.username = :username AND u.senha = :senha")
-					.setParameter("username", username)
-					.setParameter("senha", senha).getResultList().get(0);
+					.createQuery("SELECT u FROM Usuario u WHERE u.username = :username AND u.senha = :senha")
+					.setParameter("username", username).setParameter("senha", senha).getResultList().get(0);
 			manager.close();
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -94,20 +92,32 @@ public class UsuarioPersistencia extends Persistencia {
 		return user;
 	}
 
-	// Envia pedido de amizade para um usuário
-	public void enviarPedidoAmizade(Usuario solicitante, Usuario solicitado,
-			boolean confirmado) {
+	// Envia pedido de amizade para um usuário. Retorna true se o pedido pode ser feito
+	public boolean enviarPedidoAmizade(Usuario solicitante, Usuario solicitado, boolean confirmado) {
 		manager = factory.createEntityManager();
+		boolean pode = false;
 		Amizade amizade = new Amizade(solicitante, solicitado, confirmado);
 		try {
-			manager.getTransaction().begin();
-			manager.persist(amizade);
-			manager.getTransaction().commit();
-			manager.close();
+			List<Amizade> pedido = (List<Amizade>) manager
+					.createQuery("SELECT am FROM Amizade am"
+							+ " WHERE (am.solicitado = :solicitado"
+							+ " AND am.solicitante = :solicitante)"
+							+ " OR ((am.solicitado = :solicitante AND "
+							+ "am.solicitante = :solicitado))")
+					.setParameter("solicitado", solicitado).setParameter("solicitante", solicitante).getResultList();
+
+			if(pedido.size() == 0) {
+				manager.getTransaction().begin();
+				manager.persist(amizade);
+				manager.getTransaction().commit();
+				manager.close();
+				pode =  true;
+			} 
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
 		}
+		return pode;
 	}
 
 	// Retorna lista de pedidos que ainda não foram aceitos
@@ -117,9 +127,7 @@ public class UsuarioPersistencia extends Persistencia {
 
 		try {
 			pendencias = (List<Amizade>) manager
-					.createQuery(
-							"SELECT am FROM Amizade am"
-									+ " WHERE am.solicitado = :user AND am.confirmado = 0")
+					.createQuery("SELECT am FROM Amizade am" + " WHERE am.solicitado = :user AND am.confirmado = 0")
 					.setParameter("user", solicitado).getResultList();
 			manager.close();
 		} catch (HibernateException e) {
@@ -154,15 +162,13 @@ public class UsuarioPersistencia extends Persistencia {
 		try {
 
 			amigos1 = (List<Usuario>) manager
-					.createQuery(
-							"SELECT am.solicitante FROM Amizade am"
-									+ " WHERE am.solicitado = :user AND am.confirmado = 1")
+					.createQuery("SELECT am.solicitante FROM Amizade am"
+							+ " WHERE am.solicitado = :user AND am.confirmado = 1")
 					.setParameter("user", user).getResultList();
 
 			amigos2 = (List<Usuario>) manager
-					.createQuery(
-							"SELECT am.solicitado FROM Amizade am"
-									+ " WHERE am.solicitante = :user AND am.confirmado = 1")
+					.createQuery("SELECT am.solicitado FROM Amizade am"
+							+ " WHERE am.solicitante = :user AND am.confirmado = 1")
 					.setParameter("user", user).getResultList();
 
 			amigos1.addAll(amigos2);
@@ -184,9 +190,8 @@ public class UsuarioPersistencia extends Persistencia {
 		try {
 
 			coms = (List<Comunidade>) manager
-					.createQuery(
-							"SELECT cu.comunidade FROM ComunidadeUsuario cu"
-									+ " WHERE cu.participante = :user AND cu.confirmado = 1")
+					.createQuery("SELECT cu.comunidade FROM ComunidadeUsuario cu"
+							+ " WHERE cu.participante = :user AND cu.confirmado = 1")
 					.setParameter("user", user).getResultList();
 
 			manager.close();

@@ -8,6 +8,7 @@
 	</head>
 	<body>
 		<a href="getPerfil.jsp">Perfil</a><br>
+		<a href="getAmigos.jsp">Amigos</a><br>
 		<a href="deslogar.jsp">Deslogar</a>
 	</body>
 </html>

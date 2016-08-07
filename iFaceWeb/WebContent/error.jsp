@@ -10,5 +10,5 @@
 		${messageError}
 	</body>
 	<br>
-	<a href = home.jsp>Voltar à página inicial</a>
+	<a href = index.jsp>Voltar à página inicial</a>
 </html>
