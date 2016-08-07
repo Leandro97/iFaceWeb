@@ -12,7 +12,7 @@
 <title>Perfil de ${usuario.getNome()}</title>
 </head>
 <body>
-	Clique nos valores para editá-los!
+	<h3>Clique nos valores para editá-los!</h3>
 	
 	<table border = 1>
 			<tr><th>Atributo</th><th>Valor</th></tr>
@@ -45,6 +45,6 @@
 			</form>
 			</tr>
 	</table>
-	
+	<br><a href = "home.jsp">Voltar à página inicial</a>
 </body>
 </html>

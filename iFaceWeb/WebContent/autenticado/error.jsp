@@ -7,8 +7,8 @@
 		<title>${pageTitle}</title>
 	</head>
 	<body>
-		${operacao}
+		${messageError}
 	</body>
 	<br>
-	<a href = index.jsp>Voltar à página inicial</a>
+	<a href = home.jsp>Voltar à página inicial</a>
 </html>

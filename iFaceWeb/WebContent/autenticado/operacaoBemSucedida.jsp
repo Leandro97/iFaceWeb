@@ -10,5 +10,5 @@
 		${operacao}
 	</body>
 	<br>
-	<a href = index.jsp>Voltar à página inicial</a>
+	<a href = home.jsp>Voltar à página inicial</a>
 </html>

@@ -10,7 +10,10 @@
 <title>Amigos de ${usuario.getNome()}</title>
 </head>
 <body>
-	Seus amigos:
+	<form action = "enviarPedidoAmizade.jsp" method = "post">
+		Enviar pedido de amizade para: <input type = "text" name = "novoAmigo" placeHolder = "Digite aqui o login"><input type = "submit" value = "Enviar">
+	</form>
+	<h3>Seus amigos:</h3>
 
 	<%
 	List<Usuario> amigos = (List<Usuario>) request.getAttribute("amigos");
@@ -42,7 +45,7 @@
 		}
 	%>
 
-	<br> Pedidos recebidos:
+	<br> <h3>Pedidos recebidos:</h3>
 
 	<%
 		List<Amizade> pedidos = (List<Amizade>) request.getAttribute("pedidos");
@@ -83,5 +86,7 @@
 	<%
 		}
 	%>
+	
+	<br><a href = "home.jsp">Voltar à página inicial</a>
 </body>
 </html>

@@ -59,7 +59,7 @@ public class EditarAtributo extends HttpServlet {
 			
 			request.setAttribute("operacao", "Atributo atualizado!");
 			request.setAttribute("pageTitle", "Atributo atualizado!");
-			request.getRequestDispatcher("../operacaoBemSucedida.jsp").forward(request, response);
+			request.getRequestDispatcher("operacaoBemSucedida.jsp").forward(request, response);
 		} else {
 			response.sendRedirect("getPerfil.jsp");
 		}

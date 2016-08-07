@@ -61,7 +61,7 @@ public class AceitarPedidoAmizade extends HttpServlet {
 		
 		request.setAttribute("operacao", "Pedido aceito!");
 		request.setAttribute("pageTitle", "Pedido aceito!");
-		request.getRequestDispatcher("../operacaoBemSucedida.jsp").forward(request, response);
+		request.getRequestDispatcher("operacaoBemSucedida.jsp").forward(request, response);
 	}
 
 }
