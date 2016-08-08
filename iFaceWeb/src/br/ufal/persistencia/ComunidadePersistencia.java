@@ -26,7 +26,7 @@ public class ComunidadePersistencia extends Persistencia {
 	}
 
 	// Persiste uma comunidade no banco
-	public void salvarComunidade(Comunidade com) throws PersistenceException{
+	public void salvarComunidade(Comunidade com) throws PersistenceException {
 		manager = factory.createEntityManager();
 
 		try {
@@ -37,7 +37,7 @@ public class ComunidadePersistencia extends Persistencia {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
-		} 
+		}
 	}
 
 	// Retorna um usuário ao receber seu id
@@ -57,18 +57,30 @@ public class ComunidadePersistencia extends Persistencia {
 	}
 
 	// Inclui usuário em uma comunidade
-	public void enviarPedidoComunidade(Comunidade com, Usuario user, boolean confirmado) {
+	public boolean enviarPedidoComunidade(Comunidade com, Usuario user, boolean confirmado) {
 		manager = factory.createEntityManager();
-		ComunidadeUsuario uc = new ComunidadeUsuario(com, user, confirmado);
+		boolean pode = false;
+
 		try {
-			manager.getTransaction().begin();
-			manager.persist(uc);
-			manager.getTransaction().commit();
-			manager.close();
+			List<ComunidadeUsuario> pedido = (List<ComunidadeUsuario>) manager
+					.createQuery("SELECT cu FROM ComunidadeUsuario cu WHERE "
+							+ "cu.comunidade = :com AND cu.participante = :user")
+					.setParameter("com", com).setParameter("user", user).getResultList();
+
+			ComunidadeUsuario uc = new ComunidadeUsuario(com, user, confirmado);
+
+			if(pedido.size() == 0) {
+				manager.getTransaction().begin();
+				manager.persist(uc);
+				manager.getTransaction().commit();
+				manager.close();
+				pode = true;
+			}
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
 		}
+		return pode;
 	}
 
 	// Retorna lista de usuários que ainda não foram aceitos em uma comunidade
@@ -78,9 +90,8 @@ public class ComunidadePersistencia extends Persistencia {
 
 		try {
 			pendencias = (List<ComunidadeUsuario>) manager
-					.createQuery(
-							"SELECT cu FROM ComunidadeUsuario cu"
-									+ " WHERE cu.comunidade = :comunidade AND cu.confirmado = 0")
+					.createQuery("SELECT cu FROM ComunidadeUsuario cu"
+							+ " WHERE cu.comunidade = :comunidade AND cu.confirmado = 0")
 					.setParameter("comunidade", com).getResultList();
 			manager.close();
 		} catch (HibernateException e) {
@@ -114,8 +125,7 @@ public class ComunidadePersistencia extends Persistencia {
 		try {
 			membros = (List<Usuario>) manager
 					.createQuery(
-							"SELECT cu.participante FROM ComunidadeUsuario cu "
-									+ "WHERE cu.comunidade = :comunidade "
+							"SELECT cu.participante FROM ComunidadeUsuario cu " + "WHERE cu.comunidade = :comunidade "
 									+ "AND cu.participante != cu.comunidade.dono AND cu.confirmado = 1")
 					.setParameter("comunidade", com).getResultList();
 			manager.close();

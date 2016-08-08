@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import br.ufal.fachada.Fachada;
 import br.ufal.modelo.Comunidade;
 import br.ufal.modelo.ComunidadeUsuario;
+import br.ufal.modelo.Usuario;
 
 /**
  * Servlet implementation class AceitarPedidoComunidade
@@ -51,6 +52,13 @@ public class AceitarPedidoComunidade extends HttpServlet {
 		Fachada.getInstance().aceitarPedidoComunidade(pedidos.get(indiceInt));
 		
 		Fachada.getInstance().atualizarComunidade(comunidade);
+		
+		Usuario usuario = (Usuario) request.getSession(true).getAttribute("usuarioLogado");
+		Usuario userNoBanco = Fachada.getInstance().getUsuarioById(usuario.getUsername());
+		Fachada.getInstance().atualizarUsuario(userNoBanco);
+		
+		request.getSession(true).invalidate();
+		request.getSession(true).setAttribute("usuarioLogado", userNoBanco);
 		
 		request.setAttribute("operacao", "Pedido aceito!");
 		request.setAttribute("pageTitle", "Pedido aceito!");

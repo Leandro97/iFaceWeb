@@ -9,7 +9,8 @@
 	<body>
 		<a href = "criarComunidade.html">Criar comunidade</a><br>
 		<a href = "getComunidadesAdmin.jsp">Listar comunidades que administro</a><br>
-		<a href = "">Listar comunidades que participo</a><br>
+		<a href = "getComunidadesPart.jsp">Listar comunidades que participo</a><br>
+		<a href = "getComunidades.jsp">Mensagens</a><br>
 		<a href = home.jsp>Voltar à página inicial</a>
 	</body>
 </html>

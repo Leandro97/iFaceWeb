@@ -28,7 +28,7 @@
 		%>
 		<form action = "enviarMensagemUsuario.jsp" method = "post">
 			<textarea name="mensagemUsuario" rows="5" cols="50"></textarea>
-			<input type = "hidden" name = "receptor" value = <%=emissor%>>
+			<input type = "hidden" name = "receptor" value = "<%=emissor%>">
 			<input type = "submit" value = "Enviar mensagem">
 		</form>
 		<br>

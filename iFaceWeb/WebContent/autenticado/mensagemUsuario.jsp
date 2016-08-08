@@ -22,7 +22,7 @@
 			<td>
 				<%=usuario.getUsername()%>
 				<form action="conversa.jsp" method="post">
-					<input type="hidden" name="usuarioChat" value=<%=usuario.getUsername()%>>
+					<input type="hidden" name="usuarioChat" value="<%=usuario.getUsername()%>">
 					<input type="submit" value="Chat">
 				</form>
 			</td>

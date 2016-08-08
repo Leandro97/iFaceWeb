@@ -8,6 +8,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Comunidades de ${usuario.getNome()}</title>
 	</head>
+	
+	<h3>Comunidades:</h3>
 	<body>
 		<%
 			List<Comunidade> comunidadesAdmin = (List<Comunidade>) request.getAttribute("comunidadesAdmin");

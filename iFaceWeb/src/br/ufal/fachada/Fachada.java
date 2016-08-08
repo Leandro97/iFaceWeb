@@ -76,7 +76,7 @@ public class Fachada {
 	}
 
 	// Retorna lista de comunidades que o usuário administra
-	public List<Comunidade> getComunidades(Usuario user) {
+	public List<Comunidade> getComunidadesQueParticipo(Usuario user) {
 		return UsuarioPersistencia.getInstance().getComunidadesQueParticipo(user);
 	}
 
@@ -129,8 +129,8 @@ public class Fachada {
 	}
 
 	// Inclui usuário em uma comunidade
-	public void enviarPedidoComunidade(Comunidade com, Usuario user) {
-		ComunidadePersistencia.getInstance().enviarPedidoComunidade(com, user, false);
+	public boolean enviarPedidoComunidade(Comunidade com, Usuario user) {
+		return ComunidadePersistencia.getInstance().enviarPedidoComunidade(com, user, false);
 	}
 
 	// Retorna lista de usuários que ainda não foram aceitos em uma comunidade

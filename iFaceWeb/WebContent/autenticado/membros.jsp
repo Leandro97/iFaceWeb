@@ -10,9 +10,6 @@
 <title>Membros de ${comunidadeAdministrada.getNome()}</title>
 </head>
 <body>
-	<form action = "enviarPedidoComunidade.jsp" method = "post">
-		Enviar pedido de inclusão para a comunidade: <input type = "text" name = "" placeHolder = "Digite aqui o nome da comunidade"><input type = "submit" value = "Enviar">
-	</form>
 	<h3>Membros:</h3>
 
 	<%
