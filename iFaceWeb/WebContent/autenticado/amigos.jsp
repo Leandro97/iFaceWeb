@@ -31,6 +31,12 @@
 		<tr>
 			<td><%=user.getNome()%></td>
 			<td><%=user.getUsername()%></td>
+			<td>
+				<form action="conversa.jsp" method="post">
+					<input type="hidden" name="usuarioChat" value=<%=user.getUsername()%>>
+					<input type="submit" value="Chat">
+				</form>
+			</td>
 			<br>
 		</tr>
 		<%
