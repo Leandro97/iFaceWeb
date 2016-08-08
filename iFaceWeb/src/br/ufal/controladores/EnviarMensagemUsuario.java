@@ -56,7 +56,7 @@ public class EnviarMensagemUsuario extends HttpServlet {
 		Fachada.getInstance().mensagemParaUsuario(emissorNoBanco, receptorNoBanco, mensagem);
 		Fachada.getInstance().atualizarUsuario(emissorNoBanco);
 		Fachada.getInstance().atualizarUsuario(receptorNoBanco);
-		List<MensagemUsuario> msgs = Fachada.getInstance().getMensagens(receptorNoBanco, emissorNoBanco);
+		List<MensagemUsuario> msgs = Fachada.getInstance().getMensagensUsuarios(receptorNoBanco, emissorNoBanco);
 		
 		request.setAttribute("mensagens", msgs);
 		request.setAttribute("receptor", emissorNoBanco.getUsername());

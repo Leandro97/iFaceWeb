@@ -10,19 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.ufal.fachada.Fachada;
-import br.ufal.modelo.Usuario;
+import br.ufal.modelo.Comunidade;
+import br.ufal.modelo.MensagemComunidade;
 
 /**
- * Servlet implementation class GetUsuarios
+ * Servlet implementation class Recado
  */
-@WebServlet("/autenticado/getUsuarios.jsp")
-public class GetUsuarios extends HttpServlet {
+@WebServlet("/autenticado/recado.jsp")
+public class Recado extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetUsuarios() {
+    public Recado() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,12 +32,15 @@ public class GetUsuarios extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Usuario usuario = (Usuario) request.getSession(true).getAttribute("usuarioLogado");
+		request.setCharacterEncoding("utf-8");
+		String comunidadeNome = request.getParameter("comunidadeNome");
 		
-		List<Usuario> usuarios = Fachada.getInstance().getAllUsers(usuario);
+		Comunidade comunidadeNoBanco = Fachada.getInstance().getComunidadeById(comunidadeNome);
+		List<MensagemComunidade> msgs = Fachada.getInstance().getMensagensComunidade(comunidadeNoBanco);
 		
-		request.setAttribute("usuarios", usuarios);
-		request.getRequestDispatcher("mensagemUsuario.jsp").forward(request, response);
+		request.setAttribute("mensagens", msgs);
+		request.setAttribute("comunidadeNome", comunidadeNome);
+		request.getRequestDispatcher("chatComunidade.jsp").forward(request, response);
 	}
 
 	/**

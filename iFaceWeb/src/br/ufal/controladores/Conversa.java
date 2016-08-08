@@ -51,7 +51,7 @@ public class Conversa extends HttpServlet {
 		Usuario receptorNoBanco = Fachada.getInstance().getUsuarioById(receptor.getUsername());
 		Usuario emissorNoBanco = Fachada.getInstance().getUsuarioById(emissor);
 
-		List<MensagemUsuario> msgs = Fachada.getInstance().getMensagens(receptorNoBanco, emissorNoBanco);
+		List<MensagemUsuario> msgs = Fachada.getInstance().getMensagensUsuarios(receptorNoBanco, emissorNoBanco);
 		
 		request.setAttribute("mensagens", msgs);
 		request.setAttribute("emissor", emissor);

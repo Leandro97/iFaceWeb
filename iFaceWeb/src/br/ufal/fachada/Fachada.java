@@ -6,6 +6,7 @@ import br.ufal.modelo.Amizade;
 import br.ufal.modelo.Atributo;
 import br.ufal.modelo.Comunidade;
 import br.ufal.modelo.ComunidadeUsuario;
+import br.ufal.modelo.MensagemComunidade;
 import br.ufal.modelo.MensagemUsuario;
 import br.ufal.modelo.Usuario;
 import br.ufal.persistencia.AtributoPersistencia;
@@ -113,12 +114,17 @@ public class Fachada {
 
 	// Bloco de Comunidade
 
+	// Retorna lista de todas as comunidades cadastradas
+	public List<Comunidade> getAllComunidades() {
+		return ComunidadePersistencia.getInstance().getAllComunidades();
+	}
+
 	// Persiste uma comunidade no banco
 	public void salvarComunidade(Comunidade com) {
 		ComunidadePersistencia.getInstance().salvarComunidade(com);
 	}
-	
-	//Atualiza uma comunidade
+
+	// Atualiza uma comunidade
 	public void atualizarComunidade(Comunidade comunidade) {
 		ComunidadePersistencia.getInstance().atualizarComunidade(comunidade);
 	}
@@ -161,11 +167,18 @@ public class Fachada {
 	public void mensagemParaUsuario(Usuario emissor, Usuario receptor, String conteudo) {
 		MensagemPersistencia.getInstance().mensagemParaUsuario(emissor, receptor, conteudo);
 	}
-	// Fim do bloco de Mensagem
-
-	public List<MensagemUsuario> getMensagens(Usuario receptor, Usuario emissor) {
+	
+	//Retorna lista de mensagens trocadas entre receptor e emissor
+	public List<MensagemUsuario> getMensagensUsuarios(Usuario receptor, Usuario emissor) {
 		return UsuarioPersistencia.getInstance().getMensagens(receptor, emissor);
 	}
+	
+	// Retorna lista de mensagens trocadas entre receptor e emissor
+	public List<MensagemComunidade> getMensagensComunidade(Comunidade com) {
+		return ComunidadePersistencia.getInstance().getMensagensComunidade(com);
+	}
+	
+	// Fim do bloco de Mensagem
 
 
 }

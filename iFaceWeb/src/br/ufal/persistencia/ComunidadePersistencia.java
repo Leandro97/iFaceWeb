@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 
 import br.ufal.modelo.Comunidade;
 import br.ufal.modelo.ComunidadeUsuario;
+import br.ufal.modelo.MensagemComunidade;
 import br.ufal.modelo.Usuario;
 
 public class ComunidadePersistencia extends Persistencia {
@@ -23,6 +24,22 @@ public class ComunidadePersistencia extends Persistencia {
 			instance = new ComunidadePersistencia();
 		}
 		return instance;
+	}
+
+	// Retorna lista de todas as comunidades cadastradas
+	public List<Comunidade> getAllComunidades() {
+		manager = factory.createEntityManager();
+		List<Comunidade> coms = null;
+		try {
+			coms = (List<Comunidade>) manager.createQuery("SELECT c FROM Comunidade c").getResultList();
+			manager.close();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			manager.getTransaction().rollback();
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+		return coms;
 	}
 
 	// Persiste uma comunidade no banco
@@ -69,7 +86,7 @@ public class ComunidadePersistencia extends Persistencia {
 
 			ComunidadeUsuario uc = new ComunidadeUsuario(com, user, confirmado);
 
-			if(pedido.size() == 0) {
+			if (pedido.size() == 0) {
 				manager.getTransaction().begin();
 				manager.persist(uc);
 				manager.getTransaction().commit();
@@ -151,5 +168,23 @@ public class ComunidadePersistencia extends Persistencia {
 		} finally {
 			manager.close();
 		}
+	}
+
+	// Retorna lista de mensagens trocadas entre receptor e emissor
+	public List<MensagemComunidade> getMensagensComunidade(Comunidade com) {
+		List<MensagemComunidade> msgs = null;
+		manager = factory.createEntityManager();
+
+		try {
+			msgs = (List<MensagemComunidade>) manager
+					.createQuery("SELECT mc FROM MensagemComunidade mc WHERE mc.receptor = :com")
+					.setParameter("com", com).getResultList();
+			manager.close();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			manager.getTransaction().rollback();
+		}
+
+		return msgs;
 	}
 }

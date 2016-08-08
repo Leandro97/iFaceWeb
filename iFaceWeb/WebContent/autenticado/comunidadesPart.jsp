@@ -28,8 +28,8 @@
 						<tr>
 							<td><%=com.getNome()%></td>
 							<td>
-								<form action ="" method = "post">
-									<input type = "hidden" name = "" value = "<%=com.getNome()%>">
+								<form action ="recado.jsp" method = "post">
+									<input type = "hidden" name = "comunidadeNome" value = "<%=com.getNome()%>">
 									<input type = "submit" value = "Mensagem">
 								</form>
 							</td>

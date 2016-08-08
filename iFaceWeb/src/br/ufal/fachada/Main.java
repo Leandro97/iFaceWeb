@@ -1,5 +1,6 @@
 package br.ufal.fachada;
 
+import br.ufal.modelo.Comunidade;
 import br.ufal.modelo.Usuario;
 
 public class Main {
@@ -143,6 +144,11 @@ public class Main {
 		//
 		// //alterando um atributo
 		Usuario u1 = Fachada.getInstance().getUsuarioById("a");
+		Comunidade c = Fachada.getInstance().getComunidadeById("ct");
+		
+		Fachada.getInstance().mensagemParaComunidade(u1, c, "Msg com 1");
+		Fachada.getInstance().mensagemParaComunidade(u1, c, "Msg com 2");
+		Fachada.getInstance().mensagemParaComunidade(u1, c, "Msg com 3");
 		// Atributo a1 = u1.getAtributos().get(0);
 		// a1.setNome("Quero");
 		// Fachada.getInstance().atualizarAtributo(a1);
