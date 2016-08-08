@@ -6,6 +6,7 @@ import br.ufal.modelo.Amizade;
 import br.ufal.modelo.Atributo;
 import br.ufal.modelo.Comunidade;
 import br.ufal.modelo.ComunidadeUsuario;
+import br.ufal.modelo.MensagemUsuario;
 import br.ufal.modelo.Usuario;
 import br.ufal.persistencia.AtributoPersistencia;
 import br.ufal.persistencia.ComunidadePersistencia;
@@ -28,6 +29,11 @@ public class Fachada {
 	}
 
 	// Bloco de Usuário
+	
+	//Retorna lista de todos os usuários cadastrados
+		public List<Usuario> getAllUsers(Usuario user) {
+			return UsuarioPersistencia.getInstance().getAllUsers(user);
+		}
 
 	// Persiste um usuário no banco
 	public void salvarUsuario(Usuario user) {
@@ -69,7 +75,7 @@ public class Fachada {
 		return UsuarioPersistencia.getInstance().getAmigos(user);
 	}
 
-	// Retorna lista de amigos de usuário
+	// Retorna lista de comunidades que o usuário administra
 	public List<Comunidade> getComunidades(Usuario user) {
 		return UsuarioPersistencia.getInstance().getComunidades(user);
 	}
@@ -146,5 +152,9 @@ public class Fachada {
 		MensagemPersistencia.getInstance().mensagemParaUsuario(emissor, receptor, conteudo);
 	}
 	// Fim do bloco de Mensagem
+
+	public List<MensagemUsuario> getMensagens(Usuario receptor, Usuario emissor) {
+		return UsuarioPersistencia.getInstance().getMensagens(receptor, emissor);
+	}
 
 }

@@ -39,6 +39,7 @@ public class CriarAtributo extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
 		String novoAtributo = request.getParameter("novoAtributo");
 		String novoValor = request.getParameter("novoValor");
 		

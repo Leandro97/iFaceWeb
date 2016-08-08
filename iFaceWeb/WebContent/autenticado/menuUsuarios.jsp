@@ -4,12 +4,11 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Bem vindo, ${usuarioLogado.getNome()}!</title>
+		<title>Menu de amigos</title>
 	</head>
 	<body>
-		<a href="getPerfil.jsp">Perfil</a><br>
-		<a href="menuUsuarios.jsp">Usuarios</a><br>
-		<a href= "comunidades.jsp">Comunidades</a><br>
-		<a href="deslogar.jsp">Deslogar</a>
+		<a href = "getAmigos.jsp">Listar (e adicionar) amigos</a><br>
+		<a href = "getUsuarios.jsp">Mensagens</a><br>
+		<a href = home.jsp>Voltar à página inicial</a>
 	</body>
 </html>

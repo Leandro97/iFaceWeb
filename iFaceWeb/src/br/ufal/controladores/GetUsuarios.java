@@ -10,20 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.ufal.fachada.Fachada;
-import br.ufal.modelo.Amizade;
 import br.ufal.modelo.Usuario;
 
 /**
- * Servlet implementation class GetAmigos
+ * Servlet implementation class GetUsuarios
  */
-@WebServlet("/autenticado/getAmigos.jsp")
-public class GetAmigos extends HttpServlet {
+@WebServlet("/autenticado/getUsuarios.jsp")
+public class GetUsuarios extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetAmigos() {
+    public GetUsuarios() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,15 +32,13 @@ public class GetAmigos extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Usuario usuario = (Usuario) request.getSession(true).getAttribute("usuarioLogado");
+		Usuario usuarioNoBanco = Fachada.getInstance().getUsuarioById(usuario.getUsername());
 		
-		Usuario userNoBanco = Fachada.getInstance().getUsuarioById(usuario.getUsername());
-		List<Usuario> amigos = Fachada.getInstance().getAmigos(userNoBanco);
-		List<Amizade> pedidos = Fachada.getInstance().getPedidosAmizade(userNoBanco);
+		List<Usuario> usuarios = Fachada.getInstance().getAllUsers(usuario);
 		
-		request.setAttribute("amigos", amigos);
-		request.setAttribute("pedidos", pedidos);
-		request.getRequestDispatcher("amigos.jsp").forward(request, response);
-		}
+		request.setAttribute("usuarios", usuarios);
+		request.getRequestDispatcher("mensagemUsuario.jsp").forward(request, response);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

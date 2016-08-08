@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 
 import br.ufal.modelo.Amizade;
 import br.ufal.modelo.Comunidade;
+import br.ufal.modelo.MensagemUsuario;
 import br.ufal.modelo.Usuario;
 
 public class UsuarioPersistencia extends Persistencia {
@@ -23,6 +24,25 @@ public class UsuarioPersistencia extends Persistencia {
 			instance = new UsuarioPersistencia();
 		}
 		return instance;
+	}
+	
+	//Retorna lista de todos os usuários cadastrados
+	public List<Usuario> getAllUsers(Usuario user) {
+		manager = factory.createEntityManager();
+		List<Usuario> users = null;
+		try {
+			users = (List<Usuario>) manager
+					.createQuery("SELECT u FROM Usuario u where u != :user")
+					.setParameter("user", user)
+					.getResultList();
+			manager.close();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			manager.getTransaction().rollback();
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+		return users;
 	}
 
 	// Persiste um usuário no banco
@@ -215,5 +235,26 @@ public class UsuarioPersistencia extends Persistencia {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
 		}
+	}
+
+	public List<MensagemUsuario> getMensagens(Usuario receptor, Usuario emissor) {
+		List<MensagemUsuario> msgs = null;
+		manager = factory.createEntityManager();
+		
+		try {
+			msgs = (List<MensagemUsuario>) manager
+					.createQuery("SELECT mu FROM MensagemUsuario mu"
+							+ " WHERE (mu.receptor = :receptor AND mu.emissor = :emissor)"
+							+ "OR (mu.receptor = :emissor AND mu.emissor = :receptor)")
+					.setParameter("receptor", receptor)
+					.setParameter("emissor", emissor).
+					getResultList();
+			manager.close();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			manager.getTransaction().rollback();
+		}
+		
+		return msgs;
 	}
 }

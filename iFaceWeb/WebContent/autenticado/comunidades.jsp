@@ -4,12 +4,9 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Bem vindo, ${usuarioLogado.getNome()}!</title>
+		<title>Minhas comunidades</title>
 	</head>
 	<body>
-		<a href="getPerfil.jsp">Perfil</a><br>
-		<a href="menuUsuarios.jsp">Usuarios</a><br>
-		<a href= "comunidades.jsp">Comunidades</a><br>
-		<a href="deslogar.jsp">Deslogar</a>
+	
 	</body>
 </html>

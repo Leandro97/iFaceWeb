@@ -146,6 +146,5 @@ public class Main {
 		// Fachada.getInstance().atualizarAtributo(a1);
 		// Fachada.getInstance().atualizarUsuario(u1);
 		//
-		// recuperando perfil de um usuário
 	}
 }

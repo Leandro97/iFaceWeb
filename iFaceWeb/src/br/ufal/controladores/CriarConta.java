@@ -40,6 +40,7 @@ public class CriarConta extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
 		String nome = request.getParameter("nome");
 		String username = request.getParameter("username");
 		String senha = request.getParameter("senha");
