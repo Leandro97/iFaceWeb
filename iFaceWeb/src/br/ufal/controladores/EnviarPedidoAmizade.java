@@ -60,8 +60,8 @@ public class EnviarPedidoAmizade extends HttpServlet {
 				request.setAttribute("pageTitle", "Pedido enviado!");
 				request.getRequestDispatcher("" + "operacaoBemSucedida.jsp").forward(request, response);
 			} else {
-				request.setAttribute("messageError", "Pedido já existe!");
-				request.setAttribute("pageTitle", "Pedido já existe!");
+				request.setAttribute("messageError", "Erro de pedido!");
+				request.setAttribute("pageTitle", "Erro de pedido!");
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
 		}

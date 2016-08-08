@@ -18,45 +18,56 @@ import br.ufal.modelo.Usuario;
 @WebServlet("/criarConta.jsp")
 public class CriarConta extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CriarConta() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public CriarConta() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		String nome = request.getParameter("nome");
 		String username = request.getParameter("username");
 		String senha = request.getParameter("senha");
-		
-		Usuario u = new Usuario(nome, username, senha);
-		
-		try {
-			Fachada.getInstance().salvarUsuario(u);
-			request.setAttribute("operacao", "Usuário cadastrado com sucesso!");
-			request.setAttribute("pageTitle", "Usuário cadastrado com sucesso!");
-			request.getRequestDispatcher("operacaoBemSucedida.jsp").forward(request, response);
-		} catch (PersistenceException e) {
-			request.setAttribute("messageError", "Usuário já cadastrado!");
-			request.setAttribute("pageTitle", "Usuário já cadastrado!");
+
+		if (nome.isEmpty() || username.isEmpty() || senha.isEmpty()) {
+			request.setAttribute("messageError", "Dados inválidos!");
+			request.setAttribute("pageTitle", "Dados inválidos!");
 			request.getRequestDispatcher("error.jsp").forward(request, response);
+		} else {
+			Usuario u = new Usuario(nome, username, senha);
+
+			try {
+				Fachada.getInstance().salvarUsuario(u);
+				request.setAttribute("operacao", "Usuário cadastrado com sucesso!");
+				request.setAttribute("pageTitle", "Usuário cadastrado com sucesso!");
+				request.getRequestDispatcher("operacaoBemSucedida.jsp").forward(request, response);
+			} catch (PersistenceException e) {
+				request.setAttribute("messageError", "Usuário já cadastrado!");
+				request.setAttribute("pageTitle", "Usuário já cadastrado!");
+				request.getRequestDispatcher("error.jsp").forward(request, response);
+			}
 		}
+
 	}
 
 }

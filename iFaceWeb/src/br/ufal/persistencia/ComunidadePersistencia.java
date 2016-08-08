@@ -31,6 +31,7 @@ public class ComunidadePersistencia extends Persistencia {
 		manager = factory.createEntityManager();
 		List<Comunidade> coms = null;
 		try {
+			manager.getTransaction().begin();
 			coms = (List<Comunidade>) manager.createQuery("SELECT c FROM Comunidade c").getResultList();
 			manager.close();
 		} catch (HibernateException e) {

@@ -3,9 +3,11 @@ package br.ufal.persistencia;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import org.hibernate.HibernateException;
 
+import br.ufal.fachada.Fachada;
 import br.ufal.modelo.Amizade;
 import br.ufal.modelo.Comunidade;
 import br.ufal.modelo.MensagemUsuario;
@@ -115,6 +117,11 @@ public class UsuarioPersistencia extends Persistencia {
 	public boolean enviarPedidoAmizade(Usuario solicitante, Usuario solicitado, boolean confirmado) {
 		manager = factory.createEntityManager();
 		boolean pode = false;
+		
+		if((solicitado.getUsername()).equals(solicitante.getUsername())) {
+			return false;
+		}
+		
 		Amizade amizade = new Amizade(solicitante, solicitado, confirmado);
 		try {
 			List<Amizade> pedido = (List<Amizade>) manager
@@ -228,8 +235,7 @@ public class UsuarioPersistencia extends Persistencia {
 
 		try {
 
-			coms = (List<Comunidade>) manager.createQuery("SELECT c FROM Comunidade c" + 
-			" WHERE c.dono = :user")
+			coms = (List<Comunidade>) manager.createQuery("SELECT c FROM Comunidade c" + " WHERE c.dono = :user")
 					.setParameter("user", user).getResultList();
 
 			manager.close();
@@ -246,7 +252,18 @@ public class UsuarioPersistencia extends Persistencia {
 		manager = factory.createEntityManager();
 		try {
 			manager.getTransaction().begin();
+			Query query = manager.createQuery("DELETE MensagemComunidade mc WHERE mc.emissor = :user");
+			query.setParameter("user", user);
+			query.executeUpdate();
+			manager.getTransaction().commit();
+			
+			user = Fachada.getInstance().getUsuarioById(user.getUsername());
+			
+			manager = factory.createEntityManager();
+			manager.getTransaction().begin();
 			manager.remove(manager.merge(user));
+			manager.flush();
+			manager.clear();
 			manager.getTransaction().commit();
 			manager.close();
 		} catch (HibernateException e) {
@@ -255,6 +272,7 @@ public class UsuarioPersistencia extends Persistencia {
 		}
 	}
 
+	// Retorna lista de mensagens trocadas entre receptor e emissor
 	public List<MensagemUsuario> getMensagens(Usuario receptor, Usuario emissor) {
 		List<MensagemUsuario> msgs = null;
 		manager = factory.createEntityManager();

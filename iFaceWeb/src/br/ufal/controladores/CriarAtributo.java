@@ -43,18 +43,24 @@ public class CriarAtributo extends HttpServlet {
 		String novoAtributo = request.getParameter("novoAtributo");
 		String novoValor = request.getParameter("novoValor");
 		
-		Usuario user = (Usuario)request.getSession(true).getAttribute("usuarioLogado");
-		Usuario userNoBanco = Fachada.getInstance().getUsuarioById(user.getUsername());
-		
-		Atributo atributo = new Atributo(userNoBanco, novoAtributo, novoValor);
-		Fachada.getInstance().salvarAtributo(atributo);
-		Fachada.getInstance().atualizarUsuario(userNoBanco);
-		
-		userNoBanco = Fachada.getInstance().getUsuarioById(user.getUsername());
-		
-		request.getSession(true).invalidate();
-		request.getSession(true).setAttribute("usuarioLogado", userNoBanco);
-		response.sendRedirect("getPerfil.jsp");
+		if(novoAtributo.isEmpty() || novoValor.isEmpty()) {
+			request.setAttribute("messageError", "Dados inválidos!");
+			request.setAttribute("pageTitle", "Dados inválidos!");
+			request.getRequestDispatcher("error.jsp").forward(request, response);
+		} else {
+			Usuario user = (Usuario)request.getSession(true).getAttribute("usuarioLogado");
+			Usuario userNoBanco = Fachada.getInstance().getUsuarioById(user.getUsername());
+			
+			Atributo atributo = new Atributo(userNoBanco, novoAtributo, novoValor);
+			Fachada.getInstance().salvarAtributo(atributo);
+			Fachada.getInstance().atualizarUsuario(userNoBanco);
+			
+			userNoBanco = Fachada.getInstance().getUsuarioById(user.getUsername());
+			
+			request.getSession(true).invalidate();
+			request.getSession(true).setAttribute("usuarioLogado", userNoBanco);
+			response.sendRedirect("getPerfil.jsp");
+		}
 	}
 
 }
