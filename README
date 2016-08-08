@@ -3,3 +3,5 @@ Autor: Leandro Martins de Freitas - Graduando de Engenharia da Computação
 
 Obs: Nesta aplicação foi utilizado o servidor Apache Tomcat. É necessário sua instalação através do link:
 http://tomcat.apache.org/download-70.cgi
+
+Obs2: O projeto deve ser importado no eclipse como "Dynamic Web Project"
