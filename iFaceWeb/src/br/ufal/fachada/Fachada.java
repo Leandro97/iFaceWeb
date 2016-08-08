@@ -29,11 +29,11 @@ public class Fachada {
 	}
 
 	// Bloco de Usuário
-	
-	//Retorna lista de todos os usuários cadastrados
-		public List<Usuario> getAllUsers(Usuario user) {
-			return UsuarioPersistencia.getInstance().getAllUsers(user);
-		}
+
+	// Retorna lista de todos os usuários cadastrados
+	public List<Usuario> getAllUsers(Usuario user) {
+		return UsuarioPersistencia.getInstance().getAllUsers(user);
+	}
 
 	// Persiste um usuário no banco
 	public void salvarUsuario(Usuario user) {
@@ -77,7 +77,12 @@ public class Fachada {
 
 	// Retorna lista de comunidades que o usuário administra
 	public List<Comunidade> getComunidades(Usuario user) {
-		return UsuarioPersistencia.getInstance().getComunidades(user);
+		return UsuarioPersistencia.getInstance().getComunidadesQueParticipo(user);
+	}
+
+	// Retorna lista de comunidades que o usuário possui
+	public List<Comunidade> getComunidadesQuePossuo(Usuario user) {
+		return UsuarioPersistencia.getInstance().getComunidadesQuePossuo(user);
 	}
 
 	// Deleta instância de usuário no banco (Tem que implementar direitinho)
@@ -112,6 +117,11 @@ public class Fachada {
 	public void salvarComunidade(Comunidade com) {
 		ComunidadePersistencia.getInstance().salvarComunidade(com);
 	}
+	
+	//Atualiza uma comunidade
+	public void atualizarComunidade(Comunidade comunidade) {
+		ComunidadePersistencia.getInstance().atualizarComunidade(comunidade);
+	}
 
 	// Retorna um usuário ao receber seu id (seu nome)
 	public Comunidade getComunidadeById(String nome) {
@@ -119,8 +129,8 @@ public class Fachada {
 	}
 
 	// Inclui usuário em uma comunidade
-	public void incluirMembro(Comunidade com, Usuario user) {
-		ComunidadePersistencia.getInstance().incluirMembro(com, user, false);
+	public void enviarPedidoComunidade(Comunidade com, Usuario user) {
+		ComunidadePersistencia.getInstance().enviarPedidoComunidade(com, user, false);
 	}
 
 	// Retorna lista de usuários que ainda não foram aceitos em uma comunidade
@@ -156,5 +166,6 @@ public class Fachada {
 	public List<MensagemUsuario> getMensagens(Usuario receptor, Usuario emissor) {
 		return UsuarioPersistencia.getInstance().getMensagens(receptor, emissor);
 	}
+
 
 }

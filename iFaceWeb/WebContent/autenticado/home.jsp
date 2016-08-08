@@ -8,8 +8,8 @@
 	</head>
 	<body>
 		<a href="getPerfil.jsp">Perfil</a><br>
-		<a href="menuUsuarios.jsp">Usuarios</a><br>
-		<a href= "comunidades.jsp">Comunidades</a><br>
+		<a href="menuUsuario.jsp">Usuarios</a><br>
+		<a href= "menuComunidade.jsp">Comunidades</a><br>
 		<a href="deslogar.jsp">Deslogar</a>
 	</body>
 </html>

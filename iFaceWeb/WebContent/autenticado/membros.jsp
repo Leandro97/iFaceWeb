@@ -2,42 +2,35 @@
 	pageEncoding="utf-8"%>
 <%@page import="java.util.List"%>
 <%@page import="br.ufal.modelo.Usuario"%>
-<%@page import="br.ufal.modelo.Amizade"%>
+<%@page import="br.ufal.modelo.ComunidadeUsuario"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Amigos de ${usuario.getNome()}</title>
+<title>Membros de ${comunidadeAdministrada.getNome()}</title>
 </head>
 <body>
-	<form action = "enviarPedidoAmizade.jsp" method = "post">
-		Enviar pedido de amizade para: <input type = "text" name = "novoAmigo" placeHolder = "Digite aqui o login"><input type = "submit" value = "Enviar">
+	<form action = "enviarPedidoComunidade.jsp" method = "post">
+		Enviar pedido de inclusão para a comunidade: <input type = "text" name = "" placeHolder = "Digite aqui o nome da comunidade"><input type = "submit" value = "Enviar">
 	</form>
-	<h3>Seus amigos:</h3>
+	<h3>Membros:</h3>
 
 	<%
-	List<Usuario> amigos = (List<Usuario>) request.getAttribute("amigos");
+	List<Usuario> membros = (List<Usuario>) request.getAttribute("membros");
 
-	if (amigos.size() != 0) {
+	if (membros.size() != 0) {
 %>
 	<table border=1>
 		<tr>
 			<th>Nome</th>
 			<th>Login</th>
-			<th>Chat</th>
 		</tr>
 		<%
-			for (Usuario user : amigos) {
+			for (Usuario user : membros) {
 		%>
 		<tr>
 			<td><%=user.getNome()%></td>
 			<td><%=user.getUsername()%></td>
-			<td>
-				<form action="conversa.jsp" method="post">
-					<input type="hidden" name="usuarioChat" value=<%=user.getUsername()%>>
-					<input type="submit" value="Chat">
-				</form>
-			</td>
 			<br>
 		</tr>
 		<%
@@ -47,7 +40,7 @@
 	<%
 		} else {
 	%>
-	Nenhum amigo!
+	Nenhum membro!
 	<%
 		}
 	%>
@@ -55,7 +48,7 @@
 	<br> <h3>Pedidos recebidos:</h3>
 
 	<%
-		List<Amizade> pedidos = (List<Amizade>) request.getAttribute("pedidos");
+		List<ComunidadeUsuario> pedidos = (List<ComunidadeUsuario>) request.getAttribute("pedidos");
 		request.setAttribute("pedidos", pedidos);
 		
 		if (pedidos.size() != 0) {
@@ -68,13 +61,14 @@
 		</tr>
 		<%
 			int i = 0;
-			for (Amizade pedido: pedidos) {
+			for (ComunidadeUsuario pedido: pedidos) {
 		%>
 		<tr>
-			<td><%=pedido.getSolicitante().getNome()%></td>
-			<td><%=pedido.getSolicitante().getUsername()%></td>
+			<td><%=pedido.getParticipante().getNome()%></td>
+			<td><%=pedido.getParticipante().getUsername()%></td>
 			<td>
-				<form action = "aceitarPedidoAmizade.jsp" method = "post">
+				<form action = "aceitarPedidoComunidade.jsp" method = "post">
+					<input type = "hidden" name = "comunidadeNome" value = "<%=pedido.getComunidade().getNome()%>">
 					<input type = "hidden" name = "pedidoIndice" value = <%=i%>>
 					<input type = "submit" value = "Aceitar">
 				</form>

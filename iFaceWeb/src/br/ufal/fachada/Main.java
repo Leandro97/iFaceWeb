@@ -1,5 +1,7 @@
 package br.ufal.fachada;
 
+import br.ufal.modelo.Usuario;
+
 public class Main {
 	public static void main(String[] args) {
 		
@@ -140,7 +142,7 @@ public class Main {
 		// Fachada.getInstance().salvarAtributo(a1);
 		//
 		// //alterando um atributo
-		// Usuario u1 = Fachada.getInstance().getUsuarioById("a");
+		Usuario u1 = Fachada.getInstance().getUsuarioById("a");
 		// Atributo a1 = u1.getAtributos().get(0);
 		// a1.setNome("Quero");
 		// Fachada.getInstance().atualizarAtributo(a1);

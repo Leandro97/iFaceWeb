@@ -27,7 +27,7 @@ public class Usuario {
 	@OneToMany(mappedBy = "emissor", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private List<MensagemComunidade> mensagensCEnviadas;
 
-	@OneToMany(mappedBy = "dono", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "dono", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Comunidade> comunidadesQuePossuo;
 
 	@OneToMany(mappedBy = "participante", cascade = CascadeType.REMOVE, orphanRemoval = true)

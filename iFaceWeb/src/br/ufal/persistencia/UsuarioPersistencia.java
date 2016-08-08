@@ -25,16 +25,14 @@ public class UsuarioPersistencia extends Persistencia {
 		}
 		return instance;
 	}
-	
-	//Retorna lista de todos os usuários cadastrados
+
+	// Retorna lista de todos os usuários cadastrados
 	public List<Usuario> getAllUsers(Usuario user) {
 		manager = factory.createEntityManager();
 		List<Usuario> users = null;
 		try {
-			users = (List<Usuario>) manager
-					.createQuery("SELECT u FROM Usuario u where u != :user")
-					.setParameter("user", user)
-					.getResultList();
+			users = (List<Usuario>) manager.createQuery("SELECT u FROM Usuario u where u != :user")
+					.setParameter("user", user).getResultList();
 			manager.close();
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -112,27 +110,26 @@ public class UsuarioPersistencia extends Persistencia {
 		return user;
 	}
 
-	// Envia pedido de amizade para um usuário. Retorna true se o pedido pode ser feito
+	// Envia pedido de amizade para um usuário. Retorna true se o pedido pode
+	// ser feito
 	public boolean enviarPedidoAmizade(Usuario solicitante, Usuario solicitado, boolean confirmado) {
 		manager = factory.createEntityManager();
 		boolean pode = false;
 		Amizade amizade = new Amizade(solicitante, solicitado, confirmado);
 		try {
 			List<Amizade> pedido = (List<Amizade>) manager
-					.createQuery("SELECT am FROM Amizade am"
-							+ " WHERE (am.solicitado = :solicitado"
-							+ " AND am.solicitante = :solicitante)"
-							+ " OR ((am.solicitado = :solicitante AND "
+					.createQuery("SELECT am FROM Amizade am" + " WHERE (am.solicitado = :solicitado"
+							+ " AND am.solicitante = :solicitante)" + " OR ((am.solicitado = :solicitante AND "
 							+ "am.solicitante = :solicitado))")
 					.setParameter("solicitado", solicitado).setParameter("solicitante", solicitante).getResultList();
 
-			if(pedido.size() == 0) {
+			if (pedido.size() == 0) {
 				manager.getTransaction().begin();
 				manager.persist(amizade);
 				manager.getTransaction().commit();
 				manager.close();
-				pode =  true;
-			} 
+				pode = true;
+			}
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
@@ -201,8 +198,8 @@ public class UsuarioPersistencia extends Persistencia {
 		return amigos1;
 	}
 
-	// Retorna lista de amigos de usuário
-	public List<Comunidade> getComunidades(Usuario user) {
+	// Retorna lista de comunidades que o usuário participa
+	public List<Comunidade> getComunidadesQueParticipo(Usuario user) {
 		List<Comunidade> coms = null;
 
 		manager = factory.createEntityManager();
@@ -212,6 +209,27 @@ public class UsuarioPersistencia extends Persistencia {
 			coms = (List<Comunidade>) manager
 					.createQuery("SELECT cu.comunidade FROM ComunidadeUsuario cu"
 							+ " WHERE cu.participante = :user AND cu.confirmado = 1")
+					.setParameter("user", user).getResultList();
+
+			manager.close();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			manager.getTransaction().rollback();
+		}
+
+		return coms;
+	}
+
+	// Retorna lista de comunidades que o usuário possui
+	public List<Comunidade> getComunidadesQuePossuo(Usuario user) {
+		List<Comunidade> coms = null;
+
+		manager = factory.createEntityManager();
+
+		try {
+
+			coms = (List<Comunidade>) manager.createQuery("SELECT c FROM Comunidade c" + 
+			" WHERE c.dono = :user")
 					.setParameter("user", user).getResultList();
 
 			manager.close();
@@ -240,21 +258,19 @@ public class UsuarioPersistencia extends Persistencia {
 	public List<MensagemUsuario> getMensagens(Usuario receptor, Usuario emissor) {
 		List<MensagemUsuario> msgs = null;
 		manager = factory.createEntityManager();
-		
+
 		try {
 			msgs = (List<MensagemUsuario>) manager
 					.createQuery("SELECT mu FROM MensagemUsuario mu"
 							+ " WHERE (mu.receptor = :receptor AND mu.emissor = :emissor)"
 							+ "OR (mu.receptor = :emissor AND mu.emissor = :receptor)")
-					.setParameter("receptor", receptor)
-					.setParameter("emissor", emissor).
-					getResultList();
+					.setParameter("receptor", receptor).setParameter("emissor", emissor).getResultList();
 			manager.close();
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
 		}
-		
+
 		return msgs;
 	}
 }

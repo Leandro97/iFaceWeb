@@ -1,8 +1,8 @@
 package br.ufal.controladores;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.ufal.fachada.Fachada;
+import br.ufal.modelo.Comunidade;
+import br.ufal.modelo.ComunidadeUsuario;
 import br.ufal.modelo.Usuario;
 
 /**
- * Servlet implementation class CriarConta
+ * Servlet implementation class GetMembros
  */
-@WebServlet("/criarConta.jsp")
-public class CriarConta extends HttpServlet {
+@WebServlet("/autenticado/getMembros.jsp")
+public class GetMembros extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CriarConta() {
+    public GetMembros() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,24 +41,17 @@ public class CriarConta extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.setCharacterEncoding("utf-8");
-		String nome = request.getParameter("nome");
-		String username = request.getParameter("username");
-		String senha = request.getParameter("senha");
+		String comunidadeNome = request.getParameter("comunidadeNome");
 		
-		Usuario u = new Usuario(nome, username, senha);
+		Comunidade comunidadeNoBanco = Fachada.getInstance().getComunidadeById(comunidadeNome);
 		
-		try {
-			Fachada.getInstance().salvarUsuario(u);
-			request.setAttribute("operacao", "Usuário cadastrado com sucesso!");
-			request.setAttribute("pageTitle", "Usuário cadastrado com sucesso!");
-			request.getRequestDispatcher("operacaoBemSucedida.jsp").forward(request, response);
-		} catch (PersistenceException e) {
-			request.setAttribute("messageError", "Usuário já cadastrado!");
-			request.setAttribute("pageTitle", "Usuário já cadastrado!");
-			request.getRequestDispatcher("error.jsp").forward(request, response);
-		}
+		List<Usuario> membros = Fachada.getInstance().getMembros(comunidadeNoBanco);
+		List<ComunidadeUsuario> pedidos = Fachada.getInstance().getPedidosComunidade(comunidadeNoBanco);
+		
+		request.setAttribute("membros", membros);
+		request.setAttribute("pedidos", pedidos);
+		request.setAttribute("comunidadeAdministrada", comunidadeNoBanco);
+		request.getRequestDispatcher("membros.jsp").forward(request, response);
 	}
 
 }

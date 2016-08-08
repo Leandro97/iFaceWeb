@@ -26,20 +26,18 @@ public class ComunidadePersistencia extends Persistencia {
 	}
 
 	// Persiste uma comunidade no banco
-	public void salvarComunidade(Comunidade com) {
+	public void salvarComunidade(Comunidade com) throws PersistenceException{
 		manager = factory.createEntityManager();
 
 		try {
 			manager.getTransaction().begin();
 			manager.persist(com);
 			manager.getTransaction().commit();
-			incluirMembro(com, com.getDono(), true);
+			enviarPedidoComunidade(com, com.getDono(), true);
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			manager.getTransaction().rollback();
-		} catch (PersistenceException e) {
-			System.out.println("Comunidade já cadastrada!");
-		}
+		} 
 	}
 
 	// Retorna um usuário ao receber seu id
@@ -59,7 +57,7 @@ public class ComunidadePersistencia extends Persistencia {
 	}
 
 	// Inclui usuário em uma comunidade
-	public void incluirMembro(Comunidade com, Usuario user, boolean confirmado) {
+	public void enviarPedidoComunidade(Comunidade com, Usuario user, boolean confirmado) {
 		manager = factory.createEntityManager();
 		ComunidadeUsuario uc = new ComunidadeUsuario(com, user, confirmado);
 		try {
@@ -116,8 +114,9 @@ public class ComunidadePersistencia extends Persistencia {
 		try {
 			membros = (List<Usuario>) manager
 					.createQuery(
-							"SELECT cu.participante FROM ComunidadeUsuario cu"
-									+ " WHERE cu.comunidade = :comunidade AND cu.confirmado = 1")
+							"SELECT cu.participante FROM ComunidadeUsuario cu "
+									+ "WHERE cu.comunidade = :comunidade "
+									+ "AND cu.participante != cu.comunidade.dono AND cu.confirmado = 1")
 					.setParameter("comunidade", com).getResultList();
 			manager.close();
 		} catch (HibernateException e) {
@@ -126,5 +125,21 @@ public class ComunidadePersistencia extends Persistencia {
 		}
 
 		return membros;
+	}
+
+	// Atualiza uma comunidade
+	public void atualizarComunidade(Comunidade comunidade) {
+		manager = factory.createEntityManager();
+
+		try {
+			manager.getTransaction().begin();
+			manager.merge(comunidade);
+			manager.getTransaction().commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			manager.getTransaction().rollback();
+		} finally {
+			manager.close();
+		}
 	}
 }
